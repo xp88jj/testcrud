@@ -12,7 +12,7 @@ function UpdateData() {
     notes: "",
   });
 
-  // Fetch records from the database
+  // Fetch records from Firebase
   useEffect(() => {
     const dbRef = ref(db, "letters");
     onValue(dbRef, (snapshot) => {
@@ -26,10 +26,10 @@ function UpdateData() {
     setSelectedId(id);
     const selectedRecord = records[id];
     setFormData({
-      date: selectedRecord.date,
-      sender: selectedRecord.sender,
-      receiver: selectedRecord.receiver,
-      notes: selectedRecord.notes,
+      date: selectedRecord.date || "",
+      sender: selectedRecord.sender || "",
+      receiver: selectedRecord.receiver || "",
+      notes: selectedRecord.notes || "",
     });
   };
 
@@ -42,6 +42,13 @@ function UpdateData() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!selectedId) return alert("Please select a record to update.");
+
+    // Validation: Check for empty fields
+    if (!formData.date || !formData.sender || !formData.receiver || !formData.notes) {
+      alert("All fields are required. Please fill in all fields before submitting.");
+      return;
+    }
+
     const dbRef = ref(db, `letters/${selectedId}`);
     update(dbRef, formData)
       .then(() => alert(`Record ${selectedId} updated successfully!`))
@@ -71,12 +78,16 @@ function UpdateData() {
       {selectedId && (
         <form onSubmit={handleSubmit}>
           <h3>Editing Record ID: {selectedId}</h3>
+          <p style={{ color: "red", fontStyle: "italic" }}>
+            All fields are required. Please fill in all fields.
+          </p>
           <input
             type="date"
             name="date"
             value={formData.date}
             onChange={handleChange}
             placeholder="Date"
+            required
           />
           <input
             type="text"
@@ -84,6 +95,7 @@ function UpdateData() {
             value={formData.sender}
             onChange={handleChange}
             placeholder="Sender"
+            required
           />
           <input
             type="text"
@@ -91,12 +103,14 @@ function UpdateData() {
             value={formData.receiver}
             onChange={handleChange}
             placeholder="Receiver"
+            required
           />
           <textarea
             name="notes"
             value={formData.notes}
             onChange={handleChange}
             placeholder="Notes"
+            required
           />
           <button type="submit">Update</button>
         </form>
