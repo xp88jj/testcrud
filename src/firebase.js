@@ -2,14 +2,14 @@ import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database"; // Or Firestore if preferred
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAq9ndrukr8VJjwn25n6lUNGpwQ6ui73Vw",
-  authDomain: "testcrud-30cfd.firebaseapp.com",
-  databaseURL: "https://testcrud-30cfd-default-rtdb.firebaseio.com",
-  projectId: "testcrud-30cfd",
-  storageBucket: "testcrud-30cfd.firebasestorage.app",
-  messagingSenderId: "742703032125",
-  appId: "1:742703032125:web:196091c5423f907fc48754",
-  measurementId: "G-MCPWDNJCRN"
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTHDOMAIN,
+  databaseURL: process.env.REACT_APP_DATABASEURL,
+  projectId: process.env.REACT_APP_PROJECTID,
+  storageBucket: process.env.REACT_APP_STORAGEBUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGINGSENDERID,
+  appId: process.env.REACT_APP_APPID,
+  measurementId: process.env.REACT_APP_MEASUREMENTID
 };
 
 // Initialize Firebase App
