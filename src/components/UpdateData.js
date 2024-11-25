@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../firebase";
 import { ref, onValue, update } from "firebase/database";
-import "./UpdateData.css"; // Import the CSS file
 
 function UpdateData() {
   const [records, setRecords] = useState({});
@@ -112,10 +111,12 @@ function UpdateData() {
   };
 
   return (
-    <div className="container">
+    <div className="flex flex-col md:flex-row gap-6 p-6 bg-gray-100 rounded-lg shadow-lg">
       {/* Records List */}
-      <div className="record-list">
-        <h3>Select a Record to Edit</h3>
+      <div className="flex-1">
+        <h3 className="text-xl font-semibold text-gray-700 mb-4">
+          Select a Record to Edit
+        </h3>
         <input
           type="text"
           placeholder="Search by sender, receiver, or notes"
@@ -124,35 +125,53 @@ function UpdateData() {
             setSearchQuery(e.target.value);
             setCurrentPage(1); // Reset to first page on new search
           }}
-          className="search-input"
+          className="w-full p-2 mb-4 border rounded-lg focus:ring-2 focus:ring-blue-500"
         />
         {currentRecords.map((key) => (
-          <div key={key} className="record">
-            <p>
+          <div
+            key={key}
+            className="p-4 mb-4 border rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow"
+          >
+            <p className="text-gray-600">
               <strong>ID:</strong> {key} | <strong>Date:</strong> {records[key].date} |{" "}
               <strong>Sender:</strong> {records[key].sender}
             </p>
-            <button className="edit-button" onClick={() => handleSelectRecord(key)}>Edit</button>
+            <button
+              onClick={() => handleSelectRecord(key)}
+              className="mt-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-300"
+            >
+              Edit
+            </button>
           </div>
         ))}
         {/* Pagination Controls */}
-        <div className="pagination">
-          <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+        <div className="flex justify-between items-center mt-4">
+          <button
+            onClick={handlePreviousPage}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed"
+          >
             Previous
           </button>
-          <span> Page {currentPage} of {totalPages} </span>
-          <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+          <span className="text-gray-600">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed"
+          >
             Next
           </button>
         </div>
       </div>
 
       {/* Update Form */}
-      <div className="form-container">
-        <h3>Edit Record</h3>
+      <div className="flex-1 bg-white p-6 rounded-lg shadow-lg">
+        <h3 className="text-xl font-semibold text-gray-700 mb-4">Edit Record</h3>
         {selectedId ? (
-          <form onSubmit={handleSubmit}>
-            <p style={{ color: "red", fontStyle: "italic" }}>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <p className="text-red-500 italic">
               Editing Record ID: {selectedId}
             </p>
             <input
@@ -160,9 +179,8 @@ function UpdateData() {
               name="date"
               value={formData.date}
               onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-              placeholder="Date"
               required
-              className="form-input"
+              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="text"
@@ -171,7 +189,7 @@ function UpdateData() {
               onChange={(e) => setFormData({ ...formData, sender: e.target.value })}
               placeholder="Sender"
               required
-              className="form-input"
+              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="text"
@@ -180,7 +198,7 @@ function UpdateData() {
               onChange={(e) => setFormData({ ...formData, receiver: e.target.value })}
               placeholder="Receiver"
               required
-              className="form-input"
+              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
             />
             <textarea
               name="notes"
@@ -188,12 +206,17 @@ function UpdateData() {
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
               placeholder="Notes"
               required
-              className="form-textarea"
+              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 resize-none"
             />
-            <button type="submit" className="submit-button">Update</button>
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-300"
+            >
+              Update
+            </button>
           </form>
         ) : (
-          <p>Please select a record to edit.</p>
+          <p className="text-gray-600">Please select a record to edit.</p>
         )}
       </div>
     </div>
