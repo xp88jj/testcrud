@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../firebase";
 import { ref, onValue, update } from "firebase/database";
+import "./UpdateData.css"; // Import the CSS file
 
 function UpdateData() {
   const [records, setRecords] = useState({});
